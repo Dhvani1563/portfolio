@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dhvani Parmar | AI &amp; Flutter Developer</title>
+<meta name="description" content="Portfolio of Dhvani Parmar: aspiring AI engineer building Flutter apps and RAG-powered assistants.">
+<meta property="og:title" content="Dhvani Parmar | AI &amp; Flutter Developer">
+<meta property="og:description" content="Aspiring AI engineer building Flutter apps and RAG-powered assistants.">
+<meta property="og:type" content="website">
+<!-- After you buy your domain, add: <link rel="canonical" href="https://yourdomain.com/"> -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F1FC;
+    --surface: #FFFFFF;
+    --ink: #1B1838;
+    --muted: #5C5878;
+    --line: #E1DCF2;
+    --soft: #ECE7FA;
+    --violet: #6C47FF;
+    --pink: #FF5FA2;
+    --orange: #FF9A4D;
+    --mint: #1FC8A0;
+    --blue: #3D8BFF;
+    --link: #5636E0;
+    --display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+    --body: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --shadow: 0 24px 50px -30px rgba(80, 50, 200, .45);
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0F0D24; --surface: #19163A; --ink: #F0EDFF; --muted: #A9A4CC; --line: #2E2A5A; --soft: #221E4A;
+      --link: #A99BFF; --shadow: 0 24px 50px -30px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0F0D24; --surface: #19163A; --ink: #F0EDFF; --muted: #A9A4CC; --line: #2E2A5A; --soft: #221E4A;
+    --link: #A99BFF; --shadow: 0 24px 50px -30px rgba(0,0,0,.8);
+  }
+  html { scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 84px); scroll-behavior: smooth; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; border-radius: 8px; }
+  .wrap { width: min(1120px, 100% - 40px); margin-inline: auto; }
+
+  /* Floating nav */
+  header.nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); z-index: 20; display: flex; justify-content: center; padding: 0 12px; pointer-events: none; }
+  .nav nav { pointer-events: auto; max-width: 100%; background: color-mix(in srgb, var(--surface) 82%, transparent); backdrop-filter: blur(14px); border: 1px solid var(--line); border-radius: 999px; padding: 6px; box-shadow: var(--shadow); }
+  .nav ul { display: flex; gap: 2px; list-style: none; margin: 0; padding: 0; overflow-x: auto; scrollbar-width: none; }
+  .nav ul::-webkit-scrollbar { display: none; }
+  .nav a.link { display: block; padding: 7px 14px; border-radius: 999px; text-decoration: none; font-size: .93rem; font-weight: 500; color: var(--muted); white-space: nowrap; }
+  .nav a.link:hover { color: var(--ink); background: var(--soft); }
+  .nav a.link.active { color: #fff; background: linear-gradient(135deg, var(--violet), var(--pink)); }
+
+  /* Hero (dark panel in both themes) */
+  .hero-shell { margin-top: -56px; padding: 96px 0 0; }
+  .hero { position: relative; overflow: hidden; border-radius: 36px; background: #120F2B; color: #fff; padding: 56px 48px 48px; isolation: isolate; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .6; z-index: -1; }
+  .blob.b1 { width: 420px; height: 420px; background: var(--violet); top: -140px; left: -100px; }
+  .blob.b2 { width: 360px; height: 360px; background: var(--pink); bottom: -160px; right: 10%; opacity: .5; }
+  .blob.b3 { width: 260px; height: 260px; background: var(--mint); top: 20%; right: -90px; opacity: .35; }
+  .hero .grid { display: grid; grid-template-columns: 1fr; }
+  .hero .grid > div { max-width: 760px; }
+  .intro { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+  .hello { margin: 0; color: rgba(255,255,255,.75); font-weight: 500; }
+  .status { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; font-size: .88rem; color: #BFF5E6; }
+  .status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 4px rgba(31,200,160,.25); }
+  h1 { font-family: var(--display); font-weight: 800; letter-spacing: -.04em; line-height: .92; font-size: clamp(3.2rem, 8.5vw, 6.2rem); margin: 0 0 20px; background: linear-gradient(100deg, #fff 20%, #D9CFFF 55%, #FFB3D4 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .role { font-family: var(--display); font-weight: 500; font-size: clamp(1.15rem, 2.3vw, 1.5rem); line-height: 1.3; margin: 0 0 18px; color: #fff; }
+  .lede { color: rgba(255,255,255,.72); max-width: 50ch; margin: 0 0 26px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-block; padding: 13px 22px; border-radius: 14px; font-weight: 600; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
+  .btn.primary { background: linear-gradient(135deg, var(--violet), var(--pink)); color: #fff; box-shadow: 0 14px 30px -12px rgba(255,95,162,.7); }
+  .btn.ghost { color: #fff; border: 1.5px solid rgba(255,255,255,.35); background: rgba(255,255,255,.06); }
+  .btn:hover { transform: translateY(-2px); }
+
+  .float-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 0; padding: 0; list-style: none; }
+  .float-tags li { padding: 5px 12px; border-radius: 999px; font-size: .85rem; font-weight: 500; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.07); }
+
+  /* Sections */
+  section { padding: 76px 0 8px; }
+  .sec-head { margin: 0 0 32px; }
+  h2.title { font-family: var(--display); font-weight: 800; letter-spacing: -.03em; font-size: clamp(2rem, 4.6vw, 3rem); line-height: 1.02; margin: 0; }
+  h2.title::after { content: ""; display: block; width: 64px; height: 6px; border-radius: 6px; margin-top: 14px; background: linear-gradient(90deg, var(--violet), var(--pink), var(--orange)); }
+
+  /* About */
+  .about-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 36px; align-items: start; }
+  .about-grid p { margin: 0 0 16px; max-width: 62ch; }
+  .stats { display: grid; gap: 14px; }
+  .stat { border-radius: 22px; padding: 20px 22px; color: #fff; box-shadow: var(--shadow); }
+  .stat b { display: block; font-family: var(--display); font-weight: 800; font-size: 1.5rem; line-height: 1.15; }
+  .stat span { opacity: .9; font-size: .95rem; }
+  .stat.s1 { background: linear-gradient(135deg, var(--violet), #9B7BFF); }
+  .stat.s2 { background: linear-gradient(135deg, var(--pink), var(--orange)); }
+  .stat.s3 { background: linear-gradient(135deg, #14A98B, var(--blue)); }
+
+  /* Skills */
+  .skill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+  .skill-group { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 22px; overflow: hidden; transition: transform .2s ease; }
+  .skill-group:hover { transform: translateY(-4px); }
+  .skill-group::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 5px; background: var(--c, var(--violet)); }
+  .skill-group .ico { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; font-size: 1.35rem; margin-bottom: 12px; background: color-mix(in srgb, var(--c, var(--violet)) 16%, transparent); }
+  .skill-group h3 { font-family: var(--display); font-size: 1.15rem; margin: 0 0 12px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .tag { padding: 4px 12px; border-radius: 999px; font-size: .88rem; font-weight: 500; color: var(--ink); background: color-mix(in srgb, var(--c, var(--violet)) 14%, transparent); border: 1px solid color-mix(in srgb, var(--c, var(--violet)) 35%, transparent); }
+
+  /* Projects */
+  .project { background: var(--surface); border: 1px solid var(--line); border-radius: 32px; overflow: hidden; margin-bottom: 36px; box-shadow: var(--shadow); }
+  .p-head { position: relative; padding: 36px 36px 30px; color: #fff; background: var(--grad); overflow: hidden; }
+  .p-head::after { content: ""; position: absolute; width: 280px; height: 280px; border-radius: 50%; right: -70px; top: -110px; background: rgba(255,255,255,.18); }
+  .p-head h3 { position: relative; font-family: var(--display); font-weight: 800; letter-spacing: -.03em; font-size: clamp(1.6rem, 3.6vw, 2.5rem); line-height: 1.05; margin: 0 0 8px; }
+  .p-head .sub { position: relative; margin: 0 0 16px; opacity: .92; max-width: 56ch; }
+  .p-head .tags { position: relative; }
+  .p-head .tag { color: #fff; background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.35); }
+  .p-body { display: grid; grid-template-columns: 1fr 1.15fr; gap: 36px; padding: 32px 36px 36px; align-items: start; }
+  .p-body ul.points { margin: 0; padding: 0; list-style: none; }
+  .p-body ul.points li { position: relative; padding-left: 28px; margin-bottom: 12px; }
+  .p-body ul.points li::before { content: ""; position: absolute; left: 0; top: .5em; width: 12px; height: 12px; border-radius: 4px; background: var(--grad); transform: rotate(45deg); }
+  .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .shot { aspect-ratio: 9 / 17; border-radius: 22px; border: 2px dashed var(--line); background: var(--soft); display: grid; place-items: center; text-align: center; color: var(--muted); font-size: .85rem; padding: 10px; overflow: hidden; position: relative; }
+  .shot::before { content: ""; position: absolute; top: 8px; left: 50%; width: 30%; height: 5px; border-radius: 4px; transform: translateX(-50%); background: var(--line); }
+  .shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .shot:has(img)::before { display: none; }
+  .shot:has(img) { border-style: solid; }
+  .g1 { --grad: linear-gradient(135deg, #6C47FF, #FF5FA2); }
+  .g2 { --grad: linear-gradient(135deg, #FF5FA2, #FF9A4D); }
+  .g3 { --grad: linear-gradient(135deg, #14A98B, #3D8BFF); }
+
+  /* Timeline */
+  .timeline { list-style: none; margin: 0; padding: 0; position: relative; }
+  .timeline::before { content: ""; position: absolute; left: 14px; top: 8px; bottom: 8px; width: 3px; border-radius: 3px; background: linear-gradient(var(--violet), var(--pink), var(--orange)); }
+  .timeline > li { position: relative; padding: 0 0 26px 48px; }
+  .timeline > li:last-child { padding-bottom: 0; }
+  .timeline > li::before { content: ""; position: absolute; left: 5px; top: 22px; width: 21px; height: 21px; border-radius: 50%; background: var(--surface); border: 5px solid var(--c); }
+  .job { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 22px 24px; }
+  .job h3 { font-family: var(--display); font-size: 1.3rem; margin: 0; line-height: 1.2; }
+  .job .where { margin: 2px 0 0; font-weight: 600; color: var(--link); }
+  .job .when { display: inline-block; margin: 8px 0 12px; padding: 2px 12px; border-radius: 999px; font-size: .85rem; font-weight: 600; background: color-mix(in srgb, var(--c) 16%, transparent); }
+  .job ul { margin: 0; padding-left: 20px; max-width: 70ch; }
+  .job ul li { margin-bottom: 5px; }
+
+  /* Education + certs */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 24px; border-left: 8px solid var(--c); }
+  .card h3 { font-family: var(--display); font-size: 1.2rem; margin: 0 0 4px; line-height: 1.2; }
+  .card p { margin: 0; color: var(--muted); }
+  .card .when { margin-top: 10px; color: var(--ink); font-weight: 600; font-size: .93rem; }
+  .cert-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .cert { display: flex; gap: 16px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px 18px; transition: transform .2s ease; }
+  .cert:hover { transform: translateY(-3px); }
+  .cert .badge { flex: none; width: 62px; height: 62px; border-radius: 16px; display: grid; place-items: center; font-size: .68rem; text-align: center; line-height: 1.1; color: var(--muted); border: 2px dashed color-mix(in srgb, var(--c) 55%, transparent); background: color-mix(in srgb, var(--c) 12%, transparent); overflow: hidden; }
+  .cert .badge img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cert b { display: block; font-family: var(--display); font-size: 1.05rem; line-height: 1.25; }
+  .cert span { color: var(--muted); font-size: .92rem; }
+  .sub-title { font-family: var(--display); font-weight: 800; font-size: 1.5rem; margin: 48px 0 16px; letter-spacing: -.02em; }
+  .langs .tag { font-size: 1rem; padding: 6px 18px; }
+
+  /* Contact */
+  .contact-card { position: relative; overflow: hidden; isolation: isolate; border-radius: 36px; padding: 56px 40px; color: #fff; background: #120F2B; }
+  .contact-card .blob.b1 { top: -120px; left: -80px; }
+  .contact-card .blob.b2 { bottom: -150px; right: -60px; }
+  .contact-card h2 { font-family: var(--display); font-weight: 800; letter-spacing: -.03em; font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.02; margin: 0 0 14px; }
+  .contact-card p { margin: 0 0 24px; color: rgba(255,255,255,.75); max-width: 48ch; }
+  .mail { display: inline-block; font-family: var(--display); font-weight: 800; font-size: clamp(1.1rem, 3.4vw, 1.8rem); text-decoration: none; padding: 14px 24px; border-radius: 18px; background: linear-gradient(135deg, var(--violet), var(--pink)); overflow-wrap: anywhere; }
+  .meta { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 26px; color: rgba(255,255,255,.75); }
+  .meta a { color: #fff; font-weight: 600; }
+  footer { padding: 32px 0 44px; color: var(--muted); font-size: .92rem; text-align: center; }
+
+  @media (max-width: 900px) {
+    .hero { padding: 40px 24px 32px; border-radius: 28px; }
+    .hero .grid, .about-grid, .p-body { grid-template-columns: 1fr; }
+    .hero .grid { gap: 32px; }
+    .p-head { padding: 28px 22px 24px; }
+    .p-body { padding: 24px 22px 26px; gap: 24px; }
+    section { padding-top: 60px; }
+    .contact-card { padding: 40px 24px; border-radius: 28px; }
+  }
+  @media (max-width: 520px) {
+    body { font-size: 16px; }
+    .shots { gap: 8px; }
+    .shot { font-size: .7rem; padding: 4px; border-radius: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn, .skill-group, .cert { transition: none; }
+  }
+  /* Show full photos with no cropping */
+
+/* Project photos: natural height, nothing cut */
+.shots { align-items: start; }
+.shot:has(img) { aspect-ratio: auto; padding: 0; background: var(--soft); }
+.shot img { position: static; inset: auto; width: 100%; height: auto; object-fit: contain; display: block; }
+
+/* Certificates: full image on top, text below */
+.cert { flex-direction: column; align-items: stretch; gap: 12px; }
+.cert .badge { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); background: #fff; display: block; }
+.cert .badge img { width: 100%; height: auto; object-fit: contain; display: block; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <nav aria-label="Sections">
+    <ul>
+      <li><a class="link" href="#about">About</a></li>
+      <li><a class="link" href="#skills">Skills</a></li>
+      <li><a class="link" href="#projects">Projects</a></li>
+      <li><a class="link" href="#experience">Experience</a></li>
+      <li><a class="link" href="#education">Education</a></li>
+      <li><a class="link" href="#certifications">Certifications</a></li>
+      <li><a class="link" href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <div class="hero-shell">
+    <div class="wrap">
+      <div class="hero">
+        <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+        <div class="grid">
+          <div>
+            <div class="intro">
+              <div>
+                <p class="hello">Hi, I'm</p>
+                <span class="status">Open to AI and Flutter roles</span>
+              </div>
+            </div>
+            <h1>Dhvani Parmar</h1>
+            <p class="role">Aspiring AI engineer who builds Flutter apps and RAG-powered assistants.</p>
+            <p class="lede">I combine mobile development, backend APIs and generative AI to build intelligent apps that are easy to use and ready to scale. Based in Vadodara, Gujarat.</p>
+            <div class="actions">
+              <a class="btn primary" href="#projects">See my projects</a>
+              <a class="btn ghost" href="https://mail.google.com/mail/?view=cm&fs=1&to=dhvanip1563@gmail.com&su=Hello%20Dhvani%2C%20I%20saw%20your%20portfolio" target="_blank" rel="noopener">Email me</a>
+            </div>
+            <ul class="float-tags"><li>Flutter</li><li>Python</li><li>RAG</li><li>Gemini</li><li>FastAPI</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="title">About me</h2></div>
+      <div class="about-grid">
+        <div>
+          <p>I'm an aspiring AI engineer with a background in Computer Engineering. I work with Flutter, Dart, Firebase and Python, and I build AI-powered applications on top of them.</p>
+          <p>I'm familiar with large language models (LLMs), Retrieval-Augmented Generation (RAG) pipelines, vector databases and RESTful API integration. I enjoy cross-platform mobile development and adding AI features that make an app smarter and friendlier to use.</p>
+          <p>What excites me most is the space where mobile apps, backend technology and generative AI meet, and building efficient, scalable products there.</p>
+        </div>
+        <div class="stats">
+          <div class="stat s1"><b>B.Tech, Computer Engineering</b><span>CHARUSAT, 2022 to 2025</span></div>
+          <div class="stat s2"><b>3 internships</b><span>Flutter and WordPress</span></div>
+          <div class="stat s3"><b>3 languages</b><span>English, Hindi, Gujarati</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="title">Skills</h2></div>
+      <div class="skill-grid">
+        <div class="skill-group" style="--c:var(--violet)"><div class="ico">💻</div><h3>Programming languages</h3><ul class="tags"><li class="tag">Python</li><li class="tag">Dart</li></ul></div>
+        <div class="skill-group" style="--c:var(--pink)"><div class="ico">📱</div><h3>Mobile app development</h3><ul class="tags"><li class="tag">Flutter</li><li class="tag">Cross-platform apps</li><li class="tag">UI development</li></ul></div>
+        <div class="skill-group" style="--c:var(--blue)"><div class="ico">⚙️</div><h3>Backend development</h3><ul class="tags"><li class="tag">FastAPI</li><li class="tag">RESTful APIs</li><li class="tag">API integration</li></ul></div>
+        <div class="skill-group" style="--c:var(--mint)"><div class="ico">☁️</div><h3>Database and cloud</h3><ul class="tags"><li class="tag">Firebase</li><li class="tag">Vector databases</li><li class="tag">Qdrant</li><li class="tag">Google Cloud Console</li></ul></div>
+        <div class="skill-group" style="--c:var(--orange)"><div class="ico">✨</div><h3>Generative AI</h3><ul class="tags"><li class="tag">Large Language Models</li><li class="tag">RAG</li><li class="tag">RAG pipeline development</li></ul></div>
+        <div class="skill-group" style="--c:var(--violet)"><div class="ico">🤖</div><h3>AI and ML tools</h3><ul class="tags"><li class="tag">Gemini API</li></ul></div>
+        <div class="skill-group" style="--c:var(--pink)"><div class="ico">🛠️</div><h3>Development tools</h3><ul class="tags"><li class="tag">Git</li><li class="tag">GitHub</li><li class="tag">Docker</li><li class="tag">Visual Studio Code</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="title">Projects</h2></div>
+
+      <!--
+        HOW TO ADD YOUR PHOTOS
+        Replace a placeholder like:   <div class="shot">Add photo 1</div>
+        with:                         <div class="shot"><img src="your-photo.jpg" alt="Describe the screen"></div>
+        Photos fill a phone-shaped frame and are cropped to fit.
+      -->
+
+      <article class="project g1" id="knowledge-assistant">
+        <div class="p-head">
+          <h3>AI Knowledge Assistant</h3>
+          <p class="sub">An AI assistant that answers questions from the content of your documents.</p>
+          <ul class="tags"><li class="tag">Python</li><li class="tag">FastAPI</li><li class="tag">RAG</li><li class="tag">Qdrant</li><li class="tag">Gemini</li><li class="tag">Flutter</li></ul>
+        </div>
+        <div class="p-body">
+          <ul class="points">
+            <li>Built an AI-powered knowledge assistant with Python and FastAPI that answers user queries based on document content.</li>
+            <li>Implemented a Retrieval-Augmented Generation (RAG) pipeline covering document processing, text chunking, embeddings and vector similarity search.</li>
+            <li>Integrated the Qdrant vector database to retrieve relevant document chunks, and the Gemini LLM to generate context-aware responses.</li>
+            <li>Developed RESTful API endpoints to connect the AI backend with the Flutter app.</li>
+            <li>Configured database connectivity and error handling for reliable API communication and AI response generation.</li>
+          </ul>
+          <div class="shots">
+            <div class="shot"><img src="images/AI_1.jpg" alt="AI Knowledge Sign up screen"></div>
+            <div class="shot"><img src="images/AI_2.jpg" alt="AI Knowledge home screen"></div>
+            <div class="shot"><img src="images/AI_3.jpg" alt="AI Knowledge Uplode a document screen"></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="project g2" id="almari">
+        <div class="p-head">
+          <h3>Almari: Outfit Recommendation System</h3>
+          <p class="sub">A digital wardrobe that suggests outfits tailored to the user.</p>
+          <ul class="tags"><li class="tag">Flutter</li><li class="tag">Dart</li><li class="tag">CockroachDB</li><li class="tag">Google Sign-In</li><li class="tag">Phone login</li></ul>
+        </div>
+        <div class="p-body">
+          <ul class="points">
+            <li>Developed a mobile app with Flutter and Dart to manage digital wardrobes and give personalized outfit recommendations.</li>
+            <li>Implemented user authentication through Google Sign-In and phone number login.</li>
+            <li>Integrated CockroachDB to store and manage application data.</li>
+            <li>Let users upload clothing images and organize them into predefined categories, or create their own custom categories.</li>
+            <li>Designed an intuitive interface that simplifies wardrobe management and improves the overall experience.</li>
+          </ul>
+          <div class="shots">
+            <div class="shot"><img src="images/almari_1.jpg" alt="Almari Get started screen"></div>
+            <div class="shot"><img src="images/almari_2.jpg" alt="Almari log-in screen"></div>
+            <div class="shot"><img src="images/almari_3.jpg" alt="Almari home screen"></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="project g3" id="news-app">
+        <div class="p-head">
+          <h3>News Application System</h3>
+          <p class="sub">A cross-platform app for reading live news by category.</p>
+          <ul class="tags"><li class="tag">Flutter</li><li class="tag">Dart</li><li class="tag">REST APIs</li></ul>
+        </div>
+        <div class="p-body">
+          <ul class="points">
+            <li>Developed a cross-platform news application using Flutter and Dart.</li>
+            <li>Integrated public REST APIs to fetch and display real-time news articles across multiple categories.</li>
+            <li>Implemented category-wise news filtering, article sharing and a responsive UI.</li>
+            <li>Optimized API data handling for smooth navigation and fast content loading.</li>
+          </ul>
+          <div class="shots">
+            <div class="shot"><img src="images/news_app_1.jpg" alt="News App Strating screen"></div>
+            <div class="shot"><img src="images/news_app_2.jpg" alt="News App home screen"></div>
+            <div class="shot"><img src="images/news_app_3.jpg" alt="News App Category screen"></div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="title">Internship experience</h2></div>
+      <ol class="timeline">
+        <li style="--c:var(--violet)">
+          <div class="job">
+            <h3>Mobile Application Developer</h3>
+            <p class="where">Augmetic</p>
+            <span class="when">January 2025 to May 2025</span>
+            <ul>
+              <li>Designed and implemented the user interfaces of a news application using Flutter during a 4-month internship.</li>
+              <li>Built responsive, visually appealing UI components.</li>
+            </ul>
+          </div>
+        </li>
+        <li style="--c:var(--pink)">
+          <div class="job">
+            <h3>Junior WordPress Developer</h3>
+            <p class="where">BrainyBeam Technologies</p>
+            <span class="when">May 2024 to June 2024</span>
+            <ul>
+              <li>Gained hands-on experience in WordPress website development and management.</li>
+              <li>Learned to purchase and configure domains within the WordPress ecosystem.</li>
+              <li>Worked with WordPress themes, plugins and basic customization for client-ready websites.</li>
+              <li>Set up local development environments with XAMPP for testing and deployment.</li>
+            </ul>
+          </div>
+        </li>
+        <li style="--c:var(--orange)">
+          <div class="job">
+            <h3>Mobile Application Developer</h3>
+            <p class="where">DSU Infotech</p>
+            <span class="when">May 2023 to June 2023</span>
+            <ul>
+              <li>Gained hands-on experience building cross-platform mobile apps with Flutter and Dart.</li>
+              <li>Built responsive, interactive user interfaces following modern design principles.</li>
+              <li>Integrated RESTful APIs to fetch and display dynamic content in the app.</li>
+              <li>Applied state management techniques for better performance and scalability.</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="title">Education</h2></div>
+      <div class="cards">
+        <div class="card" style="--c:var(--violet)">
+          <h3>B.Tech, Computer Engineering</h3>
+          <p>The Charotar University of Technology and Science, Anand</p>
+          <p class="when">July 2022 to May 2025</p>
+        </div>
+        <div class="card" style="--c:var(--pink)">
+          <h3>Diploma, Computer Engineering</h3>
+          <p>The Maharaja Sayajirao University of Baroda, Vadodara</p>
+          <p class="when">July 2019 to May 2022</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="title">Certifications</h2></div>
+      <!-- To add a certificate image, replace the text inside a .badge with: <img src="certificate.jpg" alt="Certificate name"> -->
+      <ul class="cert-list">
+  <li><a class="cert" style="--c:var(--blue)" href="https://www.coursera.org/account/accomplishments/certificate/K8LNQEMW9UXJ" target="_blank" rel="noopener"><div class="badge"><img src="images/certificate_3.jpg" alt="Google Data Analytics certificate"></div><div><b>Google Data Analytics Certificate</b><span>Google, via Coursera</span><em class="view">View certificate</em></div></a></li>
+
+  <li><a class="cert" style="--c:var(--pink)" href="https://www.coursera.org/account/accomplishments/certificate/K8LNQEMW9UXJ" target="_blank" rel="noopener"><div class="badge"><img src="images/certificate_2.jpg" alt="Google UI/UX Design certificate"></div><div><b>Google UI/UX Design Certificate</b><span>Google, via Coursera</span><em class="view">View certificate</em></div></a></li>
+
+  <li><a class="cert" style="--c:var(--mint)" href="https://coursera.org/share/5b9744c4400c235e9cbc4de64c320268" target="_blank" rel="noopener"><div class="badge"><img src="images/certificate_4.jpg" alt="Google UI/UX specialization certificate"></div><div><b>Google UI/UX Design Specialization</b><span>Coursera</span><em class="view">View certificate</em></div></a></li>
+
+  <li><a class="cert" style="--c:var(--orange)" href="https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fexam%2Eskillcourse%2Ein%2Fstudent%2Fview_certificate%3Fuid%3DSC-502069D2C0&urlhash=Sffq&mt=DFVgQn3n0-xI3sZlTGmWytkvuM8ue66Xstsr_7pfiD5nBJ0Vsdpckj_rk9qdnYrF7ystsMpNz2dKiFLI6OgTdCJJ6pHz&isSdui=true" target="_blank" rel="noopener"><div class="badge"><img src="images/certificate_1.jpg" alt="Power BI Micro Course"></div><div><b>Power BI Micro Course</b><span>Satish Dhawale</span><em class="view">View certificate</em></div></a></li>
+</ul>
+      <h3 class="sub-title">Languages</h3>
+      <ul class="tags langs"><li class="tag" style="--c:var(--violet)">English</li><li class="tag" style="--c:var(--pink)">Hindi</li><li class="tag" style="--c:var(--mint)">Gujarati</li></ul>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact-card">
+        <div class="blob b1"></div><div class="blob b2"></div>
+        <h2>Let's build something together</h2>
+        <p>Have a Flutter or AI project in mind, or an opening on your team? Send me a message.</p>
+        <a class="mail" href="https://mail.google.com/mail/?view=cm&fs=1&to=dhvanip1563@gmail.com&su=Hello%20Dhvani%2C%20I%20saw%20your%20portfolio" target="_blank" rel="noopener">dhvanip1563@gmail.com</a>
+        <div class="meta">
+          <span>Vadodara, Gujarat</span>
+          <a href="tel:+919316066133">+91 9316066133</a>
+          <!-- Replace # with your real GitHub profile link -->
+          <a href="https://github.com/Dhvani1563" target="_blank" rel="noopener"  id="github-link">GitHub </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Dhvani Parmar. Flutter, Python and a lot of curiosity.</div>
+</footer>
+
+<script>
+  // Highlight the nav link of the section being viewed
+  (function () {
+    var links = {};
+    document.querySelectorAll('a.link').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && links[e.target.id]) {
+          Object.keys(links).forEach(function (k) { links[k].classList.remove('active'); });
+          links[e.target.id].classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    Object.keys(links).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+  })();
+</script>
+</body>
+</html>
